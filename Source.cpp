@@ -10,6 +10,8 @@
 using namespace std;
 unsigned int  a = 17, c = 34, m = 2147483647,d = 666;
 
+int ccc = 0;
+
 
 void sort(double a,int * ranges1,int fnumber)
 {
@@ -40,7 +42,8 @@ void sort(double a,int * ranges1,int fnumber)
 					if (count == 0) count = 5;
 					ranges1[count - 1]++;
 				}
-				else if (fnumber==8){
+			
+				else if (fnumber==8||fnumber==6){
 					if ((a<=3)&&(a>=-3))
 					{
 						while (a < 3)
@@ -71,6 +74,7 @@ void sort(double a,int * ranges1,int fnumber)
 double method1(unsigned int& x0)
 {
 	x0 = ((a*x0 + c) % m);
+	//cout << (float(x0) / float(m)) << " ";
 	return (float(x0) / float(m));
 }
 
@@ -126,33 +130,25 @@ double method8(unsigned int& x0)
 {
 	double x,u,v;
 	v = method1(x0);
-	//cout << v << "  ";
 	u = method1(x0);
-	//cout << u << "  ";
 	x = (sqrt(8 / M_E ))*((v - 0.5) / u);
-	//cout << v << "  "<<endl;
+
 	if (x*x <= 5 - 4 * sqrt(sqrt(M_E))*u)
 	{
-		//cout << x<< endl;
 		return x;
 	}
 		
 	if (x*x >= 4 * pow(M_E, -1.35) / u + 1.4)
 	{
-		//cout << x<< endl;
 		return x;
 	}
 	while (x>-4*log(u))
 	{
 		v = method1(x0);
-		//cout << v << "  ";
 		u = method1(x0);
-		//cout << u << "  ";
 		x = (sqrt(8 / M_E))*((v - 0.5) / u);
-		//cout << x << "  "<<endl;
 	}
-	//if (x > 3) { x -= 6; }
-	//cout << x << endl;
+
 	return x;
 
 }
@@ -160,37 +156,52 @@ double method8(unsigned int& x0)
 double method9(unsigned int& x0)
 {
 	double nu=8,u;
+	method1(x0);
 	u = method1(x0);
-	//cout << -nu * log(u) << endl;
+	//cout <<u<<" "<< -nu * log(u) << endl;
 	return -nu * log(u);
 }
 
 double method10(unsigned int& x0)
 {
 	double x, y;
-	int a = 40;
+	int a = 38;
+
 	y = tan(M_PI*method1(x0));
 	x = sqrt(2 * a - 1)*y + a - 1;
+	while (         (method1(x0) > (1 + y * y)*exp(   (a - 1)*log(x / (a - 1)) - sqrt(2 * a - 1)*y))||(x<=0)   )      
+	{
+		y = tan(M_PI*method1(x0));
+		x = sqrt(2 * a - 1)*y + a - 1;
+	}
+	//cout << x <<endl;
+	if (x > 0) ccc++;
 	return x;
 }
 void ShowChartBar(int number,int * ranges,int fnumber)
 {
 	
-	if ((fnumber<=5)||(fnumber>8))
+	if ((fnumber<=5))
 	{
 		for (int i = 0; i <= 9; i++)
 		{
-			cout  << i + 1 << " " << setprecision(2)<< float(ranges[i]) / float(number) << endl;
+			cout  <<setprecision(1)<<"["<<float(i)/float(10)<<";"<< float(i+1) / float(10) << "] " <<setprecision(6)<< fixed<< float(ranges[i]) / float(number) << endl;
 		}
 	}
 	else if (fnumber < 9)
 	{
 		for (int i = 0; i <= 5; i++)
 		{
-			cout<< i + 1 << " " << setprecision(5) <<float(ranges[i]) / float(number) << endl;
+			cout << "[" << i-3 << ";" << i -2 << "] " << setprecision(6) << fixed<<float(ranges[i]) / float(number) << endl;
 		}
 			
 	}
+	else
+		for (int i = 0; i <= 9; i++)
+		{
+			cout << "[" << i*10 << ";" << (i + 1)*10 << "] " << setprecision(6) << fixed << float(ranges[i]) / float(number) << endl;
+		}
+
 }
 
 
@@ -215,8 +226,9 @@ int main()
 	double(*FuncPointerArr[10])(unsigned int&) = { method1,method2,method3,method4,method5,method6,method7,method8,method9,method10 };
 
 
-	int number =1000000;
+	int number =100000;
 	int ranges[10] = {};
+
 
 	if (functionnumber == 3)
 	{
